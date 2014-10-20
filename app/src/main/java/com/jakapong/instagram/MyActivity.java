@@ -11,16 +11,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
-import com.jakapong.instagram.Entries.Event;
+import com.jakapong.instagram.Entries.LeaderBoard;
+import com.jakapong.instagram.Entries.Location;
 import com.jakapong.instagram.Entries.ProductEntry;
+import com.jakapong.instagram.Entries.Training;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
@@ -39,11 +38,17 @@ public class MyActivity extends Activity implements ModelStatusListener {
 
     private ProductLoader productLoader;
     private EventLoader eventLoader;
+    private TrainingLoader trainingLoader;
+    private LeaderboardLoader leaderboardLoader;
+    private LocationLoader locationLoader;
+
 
     private ArrayList<ProductEntry> arrItems = new ArrayList<ProductEntry>();
 
-    private ArrayList<Event> arrEvent = new ArrayList<Event>();
-
+    private ArrayList<Training> arrEvent = new ArrayList<Training>();
+    private ArrayList<Training> arrTraining = new ArrayList<Training>();
+    private ArrayList<Location> arrLeaderboard = new ArrayList<Location>();
+    private ArrayList<Location> arrLocation = new ArrayList<Location>();
 
     private String url;
 
@@ -56,10 +61,24 @@ public class MyActivity extends Activity implements ModelStatusListener {
 //        productLoader.setModelStatusListener(this);
 //        productLoader.load();
 
+//
+//        eventLoader = new EventLoader(MyActivity.this);
+//        eventLoader.setModelStatusListener(this);
+//        eventLoader.load();
 
-        eventLoader = new EventLoader(MyActivity.this);
-        eventLoader.setModelStatusListener(this);
-        eventLoader.load();
+//
+//        trainingLoader = new TrainingLoader(MyActivity.this);
+//        trainingLoader.setModelStatusListener(this);
+//        trainingLoader.load();
+
+//        leaderboardLoader = new LeaderboardLoader(MyActivity.this);
+//        leaderboardLoader.setModelStatusListener(this);
+//        leaderboardLoader.load();
+
+        locationLoader = new LocationLoader(MyActivity.this);
+        locationLoader.setModelStatusListener(this);
+        locationLoader.load();
+
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -116,12 +135,11 @@ public class MyActivity extends Activity implements ModelStatusListener {
     @Override
     public void onLoadDataSuccess(String key, Object ts) {
 
-        arrEvent.addAll((ArrayList<Event>) ts);
+        arrLocation.addAll((ArrayList<Location>) ts);
 
-        Log.e("arrItems",""+arrEvent.size());
-        Log.e("arrItems",""+arrEvent.get(0).getName().toString());
-        Log.e("arrItems",""+arrEvent.get(0).getGeography().getName());
-        Log.e("arrItems",""+arrEvent.get(0).getUser().getEmail());
+        Log.e("arrItems",""+arrLocation.size());
+        Log.e("arrItems",""+arrLocation.get(0).getTitle());
+
 
 
 

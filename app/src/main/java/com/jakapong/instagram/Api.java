@@ -10,6 +10,10 @@ public class Api {
 
     String host2 = "http://api.appsocool.com/";
     String apiGetEvent = "api/event";
+    String apiGetTraining = "api/training";
+    String apiGetLeaderboard = "api/Leaderboard";
+    String apiGetLocation = "api/location";
+
 
 
     public String getProduct(){
@@ -20,6 +24,17 @@ public class Api {
         return host2 + apiGetEvent;
     }
 
+    public String getTraining(){
+        return host2 + apiGetTraining;
+    }
+
+    public String getLeaderboard(){
+        return host2 + apiGetLeaderboard;
+    }
+
+    public String getLocation(){
+        return host2 + apiGetLocation;
+    }
 
 }
  
