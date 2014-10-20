@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
@@ -20,6 +22,7 @@ import com.jakapong.instagram.Entries.ProductEntry;
 import com.jakapong.instagram.Entries.Training;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
@@ -57,9 +60,9 @@ public class MyActivity extends Activity implements ModelStatusListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-//        productLoader = new ProductLoader(MyActivity.this);
-//        productLoader.setModelStatusListener(this);
-//        productLoader.load();
+        productLoader = new ProductLoader(MyActivity.this);
+        productLoader.setModelStatusListener(this);
+        productLoader.load();
 
 //
 //        eventLoader = new EventLoader(MyActivity.this);
@@ -78,7 +81,6 @@ public class MyActivity extends Activity implements ModelStatusListener {
         locationLoader = new LocationLoader(MyActivity.this);
         locationLoader.setModelStatusListener(this);
         locationLoader.load();
-
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -135,37 +137,34 @@ public class MyActivity extends Activity implements ModelStatusListener {
     @Override
     public void onLoadDataSuccess(String key, Object ts) {
 
-        arrLocation.addAll((ArrayList<Location>) ts);
-
-        Log.e("arrItems",""+arrLocation.size());
-        Log.e("arrItems",""+arrLocation.get(0).getTitle());
-
-
-
-
-
-//        arrItems.addAll((ArrayList<ProductEntry>) ts);
- //        gridView = (GridView) findViewById(R.id.gridView);
-//         gridView.setAdapter(new ImagesAdapter(getApplicationContext(),arrItems));
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
+//        arrLocation.addAll((ArrayList<Location>) ts);
 //
-//                imageLoader.getInstance().loadImage(arrItems.get(position).getImage(), new SimpleImageLoadingListener() {
-//                    @Override
-//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                        // Do whatever you want with Bitmap
-//                        try {
-//                            createInstagramIntent(type, getImageUri(getApplicationContext(),loadedImage) , "Name:\n"+arrItems.get(position).getName()+"\n"+"Detail:\n"+arrItems.get(position).getDescription()+"\nPrice:\n"+arrItems.get(position).getPrice()+" ฿"+"\n\n"+"Popsud.com : #popsud "+ arrItems.get(position).getTag()+" "+arrItems.get(position).getMytag());
-//                        } catch (URISyntaxException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//                Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + arrItems.get(position).getImage());
-//            }
-//        });
-//        Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + ts);
-//        Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + key);
+//        Log.e("arrItems",""+arrLocation.size());
+//        Log.e("arrItems",""+arrLocation.get(0).getTitle());
+
+
+        arrItems.addAll((ArrayList<ProductEntry>) ts);
+        gridView = (GridView) findViewById(R.id.gridView);
+        gridView.setAdapter(new ImageAdapter(getApplicationContext(),arrItems));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
+
+                imageLoader.getInstance().loadImage(arrItems.get(position).getImage(), new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        // Do whatever you want with Bitmap
+                        try {
+                            createInstagramIntent(type, getImageUri(getApplicationContext(),loadedImage) , "Name:\n"+arrItems.get(position).getName()+"\n"+"Detail:\n"+arrItems.get(position).getDescription()+"\nPrice:\n"+arrItems.get(position).getPrice()+" ฿"+"\n\n"+"Popsud.com : #popsud "+ arrItems.get(position).getTag()+" "+arrItems.get(position).getMytag());
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + arrItems.get(position).getImage());
+            }
+        });
+        Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + ts);
+        Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + key);
     }
 
     @Override
