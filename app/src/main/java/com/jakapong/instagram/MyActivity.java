@@ -1,50 +1,65 @@
 package com.jakapong.instagram;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 
+import com.jakapong.instagram.Entries.Event;
+import com.jakapong.instagram.Entries.ProductEntry;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
 
 
-public class MyActivity extends ActionBarActivity implements View.OnClickListener {
+public class MyActivity extends Activity implements ModelStatusListener {
     Button btn_save;
     String type = "image/*";
     String filename = "/temp2.jpg";
     String mediaPath = Environment.getExternalStorageDirectory() + filename;
-    String captionText = "testtest";
+    String captionText = " #womenfashion #fashion #clothing #fashiontrend #bangkok #thailand #fashionintrend #thaistagram";
     DisplayImageOptions options;
+    ImageLoader imageLoader;
+    protected GridView gridView;
 
-    ImageLoader imageLoader ;
+    private ProductLoader productLoader;
+    private EventLoader eventLoader;
+
+    private ArrayList<ProductEntry> arrItems = new ArrayList<ProductEntry>();
+
+    private ArrayList<Event> arrEvent = new ArrayList<Event>();
+
+
+    private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+//        productLoader = new ProductLoader(MyActivity.this);
+//        productLoader.setModelStatusListener(this);
+//        productLoader.load();
+
+
+        eventLoader = new EventLoader(MyActivity.this);
+        eventLoader.setModelStatusListener(this);
+        eventLoader.load();
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -53,47 +68,13 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
 
-        btn_save = (Button) findViewById(R.id.button);
-        btn_save.setOnClickListener(this);
-        File paths = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        Log.e("ExternalStorage", "-> paths=" + paths);
-
-        imageLoader.getInstance().loadImage("http://popsud.com/70-large_default/monroe-crimson-maxi-dress.jpg", new SimpleImageLoadingListener() {
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                // Do whatever you want with Bitmap
-                Log.e("ImageManager", "Error: " + imageUri);
-
-                try {
-                    createInstagramIntent(type, getImageUri(getApplicationContext(),loadedImage) , captionText);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
-//        MyAsnyc ss = new MyAsnyc();
-//        ss.onPostExecute();
     }
+
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Instagram", null);
         return Uri.parse(path);
-    }
-    @Override
-    public void onClick(View v) {
-        if (v == btn_save){
-            try {
-                Uri uri = Uri.parse("http://popsud.com/70-large_default/monroe-crimson-maxi-dress.jpg");
-                createInstagramIntent(type, uri, captionText);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return;
     }
 
     @Override
@@ -124,90 +105,56 @@ public class MyActivity extends ActionBarActivity implements View.OnClickListene
 
         // Set the MIME type
         share.setType(type);
-
-
-
-        // Create the URI from the media
-//        File media = new File(mediaPath);
-//        Uri uri = Uri.fromFile(media);
-
-        //URI uri = new URI("http://popsud.com/70-large_default/monroe-crimson-maxi-dress.jpg");
-        // Add the URI and the caption to the Intent.
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.putExtra(Intent.EXTRA_TEXT, caption);
 
         // Broadcast the Intent.
         startActivity(Intent.createChooser(share, "Share to"));
-        
+
     }
 
-    public class MyAsnyc extends AsyncTask<Void, Void, Void> {
-        public  File file;
-        InputStream is;
+    @Override
+    public void onLoadDataSuccess(String key, Object ts) {
 
-        protected void doInBackground() throws IOException {
+        arrEvent.addAll((ArrayList<Event>) ts);
+
+        Log.e("arrItems",""+arrEvent.size());
+        Log.e("arrItems",""+arrEvent.get(0).getName().toString());
+        Log.e("arrItems",""+arrEvent.get(0).getGeography().getName());
+        Log.e("arrItems",""+arrEvent.get(0).getUser().getEmail());
 
 
-            File path = Environment.getExternalStorageDirectory();
-            file = new File(path, "DemoPicture.jpg");
-            try {
-                // Make sure the Pictures directory exists.
-                path.mkdirs();
-                URL url = new URL("http://popsud.com/70-large_default/monroe-crimson-maxi-dress.jpg");
-            /* Open a connection to that URL. */
-                URLConnection ucon = url.openConnection();
 
-            /*
-             * Define InputStreams to read from the URLConnection.
-             */
-                is = ucon.getInputStream();
 
-                OutputStream os = new FileOutputStream(file);
-                byte[] data = new byte[is.available()];
-                is.read(data);
-                os.write(data);
-                is.close();
-                os.close();
-
-            } catch (IOException e) {
-                Log.d("ImageManager", "Error: " + e);
-            }
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            // TODO Auto-generated method stub
-            try {
-                doInBackground();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        protected void onPostExecute() {
-            // Tell the media scanner about the new file so that it is
-            // immediately available to the user.
-//            MediaScannerConnection.scanFile(null,
-//                    new String[]{file.toString()}, null,
-//                    new MediaScannerConnection.OnScanCompletedListener() {
-//                        public void onScanCompleted(String path, Uri uri) {
-//                            Log.i("ExternalStorage", "Scanned " + path + ":");
-//                            Log.i("ExternalStorage", "-> uri=" + uri);
+//        arrItems.addAll((ArrayList<ProductEntry>) ts);
+ //        gridView = (GridView) findViewById(R.id.gridView);
+//         gridView.setAdapter(new ImagesAdapter(getApplicationContext(),arrItems));
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
 //
-//
-////                            try {
-////                                createInstagramIntent(type, path, captionText);
-////                            } catch (URISyntaxException e) {
-////                                e.printStackTrace();
-////                            }
-//
+//                imageLoader.getInstance().loadImage(arrItems.get(position).getImage(), new SimpleImageLoadingListener() {
+//                    @Override
+//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                        // Do whatever you want with Bitmap
+//                        try {
+//                            createInstagramIntent(type, getImageUri(getApplicationContext(),loadedImage) , "Name:\n"+arrItems.get(position).getName()+"\n"+"Detail:\n"+arrItems.get(position).getDescription()+"\nPrice:\n"+arrItems.get(position).getPrice()+" ฿"+"\n\n"+"Popsud.com : #popsud "+ arrItems.get(position).getTag()+" "+arrItems.get(position).getMytag());
+//                        } catch (URISyntaxException e) {
+//                            e.printStackTrace();
 //                        }
-//                    });
-
-        }
+//                    }
+//                });
+//                Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + arrItems.get(position).getImage());
+//            }
+//        });
+//        Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + ts);
+//        Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + key);
     }
+
+    @Override
+    public void onLoadDataFailed(String key) {
+        Log.e("onLoadDataFailed", "onLoadDataFailed: " + key);
+
+    }
+
 
 }

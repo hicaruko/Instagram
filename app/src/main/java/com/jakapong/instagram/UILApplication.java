@@ -22,13 +22,9 @@ public class UILApplication extends Application {
     @SuppressWarnings("unused")
     @Override
     public void onCreate() {
-//        if (Constants.Config.DEVELOPER_MODE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-//            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyDialog().build());
-//            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyDeath().build());
-//        }
-
+        // Here you could pull values from a config file in res/raw or somewhere else
+        // but for simplicity's sake, we'll just hardcode values
         super.onCreate();
-
         initImageLoader(getApplicationContext());
     }
 
@@ -36,16 +32,18 @@ public class UILApplication extends Application {
         // This configuration tuning is custom. You can tune every option, you may tune some of them,
         // or you can create default configuration by
         //  ImageLoaderConfiguration.createDefault(this);
-        // method.
+        // method..
+
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
                 .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .diskCacheSize(50 * 1024 * 1024) // 50 Mb
+                .diskCacheSize(100 * 1024 * 1024) // 50 Mb
                 .tasksProcessingOrder(QueueProcessingType.LIFO)
                 .writeDebugLogs() // Remove for release app
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
+
     }
 }
