@@ -137,7 +137,7 @@ public class MyActivity extends Activity implements ModelStatusListener {
     @Override
     public void onLoadDataSuccess(String key, Object ts) {
 
-//        arrLocation.addAll((ArrayList<Location>) ts);
+//            arrLocation.addAll((ArrayList<Location>) ts);
 //
 //        Log.e("arrItems",""+arrLocation.size());
 //        Log.e("arrItems",""+arrLocation.get(0).getTitle());
@@ -165,6 +165,9 @@ public class MyActivity extends Activity implements ModelStatusListener {
         });
         Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + ts);
         Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + key);
+
+
+
     }
 
     @Override
