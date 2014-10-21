@@ -103,7 +103,7 @@ public class Image3Adapter extends BaseAdapter {
 
             @Override
             public void onLoadingCancelled(String s, View view) {
-
+                
             }
         });
 
