@@ -1,5 +1,7 @@
 package com.jakapong.instagram;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
@@ -43,6 +46,10 @@ public class MyActivity extends Activity implements ModelStatusListener {
     String captionText = " #womenfashion #fashion #clothing #fashiontrend #bangkok #thailand #fashionintrend #thaistagram";
     DisplayImageOptions options;
     ImageLoader imageLoader;
+
+    ImageAdapter imageAdapter;
+
+
     protected GridView gridView;
 
     private ProductLoader productLoader;
@@ -61,11 +68,12 @@ public class MyActivity extends Activity implements ModelStatusListener {
 
     private String url;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         productLoader = new ProductLoader(MyActivity.this);
         productLoader.setModelStatusListener(this);
         productLoader.load();
@@ -117,9 +125,14 @@ public class MyActivity extends Activity implements ModelStatusListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_reload) {
+            arrItems.clear();
+            productLoader = new ProductLoader(MyActivity.this);
+            productLoader.setModelStatusListener(this);
+            productLoader.load();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -136,64 +149,8 @@ public class MyActivity extends Activity implements ModelStatusListener {
 
         share.setPackage("com.instagram.android");
 
-
         // Broadcast the Intent.
         startActivity(Intent.createChooser(share, "Share to"));
-
-//        Resources resources = getResources();
-//
-//        Intent emailIntent = new Intent();
-//        emailIntent.setAction(Intent.ACTION_SEND);
-//        // Native email client doesn't currently support HTML, but it doesn't hurt to try in case they fix it
-//        emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//        emailIntent.putExtra(Intent.EXTRA_TEXT, caption);
-//        emailIntent.setType("message/rfc822");
-//
-//        PackageManager pm = getPackageManager();
-//        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-//        sendIntent.setType(type);
-//
-//        Intent openInChooser = Intent.createChooser(emailIntent,"test");
-//
-//        List<ResolveInfo> resInfo = pm.queryIntentActivities(sendIntent, 0);
-//        List<LabeledIntent> intentList = new ArrayList<LabeledIntent>();
-//        for (int i = 0; i < resInfo.size(); i++) {
-//            // Extract the label, append it, and repackage it in a LabeledIntent
-//            ResolveInfo ri = resInfo.get(i);
-//            String packageName = ri.activityInfo.packageName;
-//            if(packageName.contains("android.email")) {
-//                emailIntent.setPackage(packageName);
-//            } else if(packageName.contains("twitter") || packageName.contains("facebook") || packageName.contains("mms") || packageName.contains("android.gm")|| packageName.contains("instagram")|| packageName.contains("ig")) {
-//                Intent intent = new Intent();
-//                intent.setComponent(new ComponentName(packageName, ri.activityInfo.name));
-//                intent.setAction(Intent.ACTION_SEND);
-//                intent.setType("text/plain");
-//
-//                Log.e("test" , packageName.toString());
-//
-//                if(packageName.contains("twitter")) {
-//
-//                } else if(packageName.contains("facebook")) {
-//                    // Warning: Facebook IGNORES our text. They say "These fields are intended for users to express themselves. Pre-filling these fields erodes the authenticity of the user voice."
-//                    // One workaround is to use the Facebook SDK to post, but that doesn't allow the user to choose how they want to share. We can also make a custom landing page, and the link
-//                    // will show the <meta content ="..."> text from that page with our link in Facebook.
-//                } else if(packageName.contains("mms")) {
-//
-//
-//                } else if(packageName.contains("android.gm")) {
-//
-//
-//                }
-//
-//                intentList.add(new LabeledIntent(intent, packageName, ri.loadLabel(pm), ri.icon));
-//            }
-//        }
-//
-//        // convert intentList to array
-//        LabeledIntent[] extraIntents = intentList.toArray( new LabeledIntent[ intentList.size() ]);
-//
-//        openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
-//        startActivity(openInChooser);
 
 
     }
@@ -201,15 +158,13 @@ public class MyActivity extends Activity implements ModelStatusListener {
     @Override
     public void onLoadDataSuccess(String key, Object ts) {
 
-//        arrLocation.addAll((ArrayList<Location>) ts);
-//
-//        Log.e("arrItems",""+arrLocation.size());
-//        Log.e("arrItems",""+arrLocation.get(0).getTitle());
-
 
         arrItems.addAll((ArrayList<ProductEntry>) ts);
         gridView = (GridView) findViewById(R.id.gridView);
-        gridView.setAdapter(new ImageAdapter(getApplicationContext(),arrItems));
+
+        imageAdapter = new ImageAdapter(getApplicationContext(),arrItems);
+
+        gridView.setAdapter(imageAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, final int position, long id) {
 

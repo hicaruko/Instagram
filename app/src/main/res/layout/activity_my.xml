@@ -5,7 +5,6 @@
     <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="50dp"
         android:id="@+id/gridView"
         android:gravity="center"
         android:horizontalSpacing="5dp"
@@ -14,47 +13,47 @@
         android:verticalSpacing="5dp"
         />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/topf"
-        android:layout_width="fill_parent"
-        android:background="@drawable/test"
-        android:layout_height="wrap_content">
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:id="@+id/topf"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:background="@drawable/test"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:layout_weight="1"
-                android:layout_marginBottom="3dp"
-                android:background="#ffffff"
-                android:id="@+id/button" />
+            <!--<Button-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="New Button"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_marginBottom="3dp"-->
+                <!--android:background="#ffffff"-->
+                <!--android:id="@+id/button" />-->
 
-            <ImageView
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:id="@+id/imageView"
-                android:background="#cccccc"
-                />
+            <!--<ImageView-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:id="@+id/imageView"-->
+                <!--android:background="#cccccc"-->
+                <!--/>-->
 
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:layout_weight="1"
-                android:layout_marginBottom="3dp"
-                android:background="#ffffff"
-                android:id="@+id/button2" />
+            <!--<Button-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="New Button"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_marginBottom="3dp"-->
+                <!--android:background="#ffffff"-->
+                <!--android:id="@+id/button2" />-->
 
-        </LinearLayout>
-    </LinearLayout>
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 </RelativeLayout>
 
