@@ -78,9 +78,9 @@ public class MyActivity extends Activity implements ModelStatusListener {
 //        leaderboardLoader.setModelStatusListener(this);
 //        leaderboardLoader.load();
 
-        locationLoader = new LocationLoader(MyActivity.this);
-        locationLoader.setModelStatusListener(this);
-        locationLoader.load();
+//        locationLoader = new LocationLoader(MyActivity.this);
+//        locationLoader.setModelStatusListener(this);
+//        locationLoader.load();
 
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
@@ -118,7 +118,6 @@ public class MyActivity extends Activity implements ModelStatusListener {
     }
 
 
-
     private void createInstagramIntent(String type,Uri uri, String caption) throws URISyntaxException {
 
         // Create the new Intent using the 'Send' action.
@@ -137,7 +136,7 @@ public class MyActivity extends Activity implements ModelStatusListener {
     @Override
     public void onLoadDataSuccess(String key, Object ts) {
 
-//            arrLocation.addAll((ArrayList<Location>) ts);
+//        arrLocation.addAll((ArrayList<Location>) ts);
 //
 //        Log.e("arrItems",""+arrLocation.size());
 //        Log.e("arrItems",""+arrLocation.get(0).getTitle());
@@ -165,8 +164,6 @@ public class MyActivity extends Activity implements ModelStatusListener {
         });
         Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + ts);
         Log.e("onLoadDataSuccess", "onLoadDataSuccess: " + key);
-
-
 
     }
 

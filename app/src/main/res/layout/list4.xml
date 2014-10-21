@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:id="@+id/banner" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal|center_vertical"
+             >
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:id="@+id/avatar" />
+            <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_alignRight="@+id/avatar"
+                    android:layout_alignBottom="@+id/avatar"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/position" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/name" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

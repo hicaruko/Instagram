@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jakapong.instagram.Entries.Event;
 import com.jakapong.instagram.Entries.ProductEntry;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -26,13 +25,13 @@ import java.util.ArrayList;
 /**
  * Created by Nemu on 1/17/14.
  */
-public class ImagesAdapter extends BaseAdapter {
+public class Image4Adapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<Event>  listData;
+    private ArrayList<ProductEntry>  listData;
     private LayoutInflater layoutInflater;
     private DisplayImageOptions options;
     // Constructor
-    public ImagesAdapter(Context c, ArrayList<Event> listData){
+    public Image4Adapter(Context c, ArrayList<ProductEntry> listData){
         mContext = c;
         layoutInflater = LayoutInflater.from(c);
         this.listData = listData;
@@ -76,40 +75,40 @@ public class ImagesAdapter extends BaseAdapter {
         }
 
 
-//        holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        WindowManager wm = (WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE);
-//        Display display = wm.getDefaultDisplay();
-//        int width = display.getWidth();
-//        int height = display.getHeight();
-//
-//        holder.imageView.setLayoutParams(new RelativeLayout.LayoutParams((width/2), (width/2)));
-//
-//        ImageLoader.getInstance().displayImage(listData.get(position).getImage(),holder.imageView, options, new ImageLoadingListener() {
-//            @Override
-//            public void onLoadingStarted(String s, View view) {
-//
-//            }
-//
-//            @Override
-//            public void onLoadingFailed(String s, View view, FailReason failReason) {
-//
-//
-//            }
-//
-//            @Override
-//            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-//
-//            }
-//
-//            @Override
-//            public void onLoadingCancelled(String s, View view) {
-//
-//            }
-//        });
-//
-//
-//
-//        holder.textView.setText(listData.get(position).getName());
+        holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        WindowManager wm = (WindowManager)this.mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight();
+
+        holder.imageView.setLayoutParams(new RelativeLayout.LayoutParams((width/2), (width/2)));
+
+        ImageLoader.getInstance().displayImage(listData.get(position).getImage(),holder.imageView, options, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+            }
+        });
+
+
+
+        holder.textView.setText(listData.get(position).getName());
 
         return convertView;
     }

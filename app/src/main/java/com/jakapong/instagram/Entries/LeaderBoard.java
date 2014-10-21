@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class LeaderBoard extends LeaderBoardEntry {
 
+
     ArrayList<UserEntry> user;
 
     public ArrayList<UserEntry> getUser() {
