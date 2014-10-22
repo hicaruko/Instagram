@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,9 +37,10 @@ import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 
-public class MyActivity extends Activity implements ModelStatusListener {
+public class MyActivity extends Activity implements ModelStatusListener, SwipeRefreshLayout.OnRefreshListener {
     Button btn_save;
     String type = "image/*";
     String filename = "/temp2.jpg";
@@ -48,7 +50,7 @@ public class MyActivity extends Activity implements ModelStatusListener {
     ImageLoader imageLoader;
 
     ImageAdapter imageAdapter;
-
+    private static final String TAG = MyActivity.class.getSimpleName();
 
     protected GridView gridView;
 
@@ -67,12 +69,16 @@ public class MyActivity extends Activity implements ModelStatusListener {
     private ArrayList<Location> arrLocation = new ArrayList<Location>();
 
     private String url;
+    private static int REFRESH_TIME_IN_SECONDS = 5;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         productLoader = new ProductLoader(MyActivity.this);
         productLoader.setModelStatusListener(this);
@@ -102,6 +108,16 @@ public class MyActivity extends Activity implements ModelStatusListener {
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.lySwipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+//        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_light,
+//                android.R.color.white, android.R.color.holo_blue_light,
+//                android.R.color.white);
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
     }
 
@@ -194,4 +210,22 @@ public class MyActivity extends Activity implements ModelStatusListener {
     }
 
 
+    @Override
+    public void onRefresh() {
+//
+//        arrItems.clear();
+//        productLoader = new ProductLoader(MyActivity.this);
+//        productLoader.setModelStatusListener(this);
+//        productLoader.load();
+
+        Log.d(TAG, "onRefresh SwipeRefreshLayout");
+        swipeRefreshLayout.postDelayed(new Runnable() {
+            @Override public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 5000);
+    }
+    private void stopSwipeRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
 }
